@@ -1,8 +1,13 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+#. Include CKEditor version 4.3.2 (released Jan. 2014)
+
 4.2.5 / 4.2.6
------
+-------------
 #. Fix static files installation - switch from distutils to setuptools
 
 4.2.4
