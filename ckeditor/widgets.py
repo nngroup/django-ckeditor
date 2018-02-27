@@ -6,7 +6,7 @@ from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
 from django.utils.encoding import force_text
 from django.core.exceptions import ImproperlyConfigured
-from django.forms.util import flatatt
+from django.forms.utils import flatatt
 import json
 
 
@@ -78,7 +78,7 @@ class CKEditorWidget(forms.Textarea):
     def render(self, name, value, attrs={}):
         if value is None:
             value = ''
-        final_attrs = self.build_attrs(attrs, name=name)
+        final_attrs = self.build_attrs(self.attrs, attrs, name=name)
         self.config.setdefault('filebrowserUploadUrl', reverse('ckeditor_upload'))
         self.config.setdefault('filebrowserBrowseUrl', reverse('ckeditor_browse'))
         return mark_safe(render_to_string('ckeditor/widget.html', {
@@ -87,3 +87,13 @@ class CKEditorWidget(forms.Textarea):
             'id': final_attrs['id'],
             'config': json_encode(self.config)
         }))
+
+    def build_attrs(self, base_attrs, extra_attrs=None, **kwargs):
+        """
+        Helper function for building an attribute dictionary.
+        This is combination of the same method from Django<=1.10 and Django1.11+
+        """
+        attrs = dict(base_attrs, **kwargs)
+        if extra_attrs:
+            attrs.update(extra_attrs)
+        return attrs
