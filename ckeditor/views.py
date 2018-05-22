@@ -6,7 +6,6 @@ from django.core.files.storage import default_storage
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from django.template import RequestContext
 
 from ckeditor import image_processing
 from ckeditor import utils
@@ -118,7 +117,7 @@ def get_image_browse_urls(user=None):
 
 
 def browse(request):
-    context = RequestContext(request, {
+    context = {
         'images': get_image_browse_urls(request.user),
-    })
+    }
     return render_to_response('browse.html', context)
